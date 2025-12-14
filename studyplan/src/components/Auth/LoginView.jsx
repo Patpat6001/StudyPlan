@@ -13,8 +13,22 @@ const LoginView = () => {
     try {
       await signInWithGoogle();
     } catch (err) {
-      setError('Erreur lors de la connexion. Veuillez réessayer.');
-      console.error(err);
+      console.error('Erreur de connexion Firebase:', err);
+      
+      // Messages d'erreur plus spécifiques
+      let errorMessage = 'Erreur lors de la connexion. Veuillez réessayer.';
+      
+      if (err.code === 'auth/unauthorized-domain') {
+        errorMessage = 'Domaine non autorisé. Veuillez ajouter ce domaine dans Firebase Console (Authentication > Settings > Authorized domains).';
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        errorMessage = 'Connexion annulée. Veuillez réessayer.';
+      } else if (err.code === 'auth/popup-blocked') {
+        errorMessage = 'Popup bloqué par le navigateur. Veuillez autoriser les popups pour ce site.';
+      } else if (err.message) {
+        errorMessage = `Erreur: ${err.message}`;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

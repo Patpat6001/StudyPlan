@@ -40,6 +40,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      // Note: Les données sont déjà sauvegardées en localStorage grâce au useEffect dans AppContext
+      // qui sauvegarde toujours en local comme backup, même quand connecté
       await signOut(auth);
     } catch (error) {
       console.error('Erreur de déconnexion:', error);

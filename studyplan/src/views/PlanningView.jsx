@@ -58,7 +58,7 @@ const PlanningView = () => {
 
   // === PARTIE CONFIGURATION ===
   const ConfigurationView = () => {
-    return (
+  return (
       <div className="space-y-6">
         <div className="card-apple p-6">
           <div className="flex items-center gap-3 mb-6">
@@ -69,8 +69,8 @@ const PlanningView = () => {
               </h2>
               <p className="text-sm text-apple-text-secondary">
                 Configurez votre planning une seule fois - ces paramètres seront utilisés pour générer automatiquement votre calendrier
-              </p>
-            </div>
+          </p>
+        </div>
           </div>
 
           {/* Dates de blocus */}
@@ -133,14 +133,14 @@ const PlanningView = () => {
                   </button>
                 );
               })}
+              </div>
             </div>
-          </div>
 
           {/* Plages horaires préférées */}
           <div className="mb-8">
             <label className="block text-sm font-semibold text-apple-text mb-4">
               Plages horaires préférées
-            </label>
+                  </label>
             <div className="grid md:grid-cols-3 gap-4">
               {[
                 { key: 'morning', label: 'Matin', icon: Sun, hours: '8h - 12h', desc: 'Plus productif le matin' },
@@ -177,49 +177,49 @@ const PlanningView = () => {
                     </div>
                     <div className="text-xs text-apple-text-secondary mt-2">
                       {period.desc}
-                    </div>
+                </div>
                   </button>
                 );
               })}
-            </div>
-          </div>
+                </div>
+              </div>
 
           {/* Heures d'étude par jour */}
           <div className="mb-8">
             <label className="block text-sm font-semibold text-apple-text mb-4">
               <Clock size={18} className="inline mr-2" />
-              Heures d'étude par jour
-            </label>
+                    Heures d'étude par jour
+                  </label>
             <div className="space-y-2">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-apple-text-secondary">Nombre d'heures</span>
                 <span className="text-2xl font-bold text-apple-text">
-                  {localSettings.hoursPerDay || 6}h
-                </span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="12"
-                step="0.5"
-                value={localSettings.hoursPerDay || 6}
-                onChange={(e) => handleSettingChange('hoursPerDay', parseFloat(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-apple-text"
-              />
-              <div className="flex justify-between text-xs text-apple-text-secondary mt-1">
-                <span>1h</span>
+                    {localSettings.hoursPerDay || 6}h
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="12"
+                  step="0.5"
+                  value={localSettings.hoursPerDay || 6}
+                  onChange={(e) => handleSettingChange('hoursPerDay', parseFloat(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-apple-text"
+                />
+                <div className="flex justify-between text-xs text-apple-text-secondary mt-1">
+                  <span>1h</span>
                 <span>6h (recommandé)</span>
-                <span>12h</span>
+                  <span>12h</span>
               </div>
             </div>
           </div>
-
+              
           {/* Durée des sessions */}
           <div className="mb-8">
             <label className="block text-sm font-semibold text-apple-text mb-4">
               Durée des sessions de travail
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { value: 0.5, label: '30 min', desc: 'Session courte' },
                 { value: 1, label: '1 heure', desc: 'Standard' },
@@ -227,55 +227,55 @@ const PlanningView = () => {
                 { value: 3, label: '3 heures', desc: 'Session longue' },
               ].map((option) => {
                 const isSelected = (localSettings.sessionDuration || 2) === option.value;
-                return (
-                  <button
+                    return (
+                      <button
                     key={option.value}
-                    type="button"
+                        type="button"
                     onClick={() => handleSettingChange('sessionDuration', option.value)}
                     className={`px-4 py-4 rounded-apple transition-all duration-200 font-medium ${
-                      isSelected
+                          isSelected
                         ? 'bg-apple-text text-white shadow-apple'
-                        : 'bg-gray-100 text-apple-text-secondary hover:bg-gray-200'
-                    }`}
-                  >
+                            : 'bg-gray-100 text-apple-text-secondary hover:bg-gray-200'
+                        }`}
+                      >
                     <div className="text-lg font-bold mb-1">{option.label}</div>
                     <div className="text-xs opacity-75">{option.desc}</div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
           {/* Pauses entre sessions */}
-          <div className="mb-6">
+              <div className="mb-6">
             <label className="block text-sm font-semibold text-apple-text mb-4">
               Pauses entre les sessions
-            </label>
+                </label>
             <div className="grid grid-cols-3 gap-3">
-              {[
+                  {[
                 { value: 15, label: '15 min', desc: 'Courte' },
                 { value: 30, label: '30 min', desc: 'Standard' },
                 { value: 60, label: '1 heure', desc: 'Longue' },
-              ].map((option) => {
+                  ].map((option) => {
                 const isSelected = (localSettings.breakDuration || 30) === option.value;
-                return (
-                  <button
-                    key={option.value}
-                    type="button"
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
                     onClick={() => handleSettingChange('breakDuration', option.value)}
                     className={`px-4 py-3 rounded-apple transition-all duration-200 font-medium ${
-                      isSelected
+                          isSelected
                         ? 'bg-apple-text text-white shadow-apple'
-                        : 'bg-gray-100 text-apple-text-secondary hover:bg-gray-200'
-                    }`}
-                  >
+                            : 'bg-gray-100 text-apple-text-secondary hover:bg-gray-200'
+                        }`}
+                      >
                     <div className="font-semibold">{option.label}</div>
                     <div className="text-xs opacity-75 mt-1">{option.desc}</div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
           {/* Bouton pour générer le planning */}
           <div className="mt-8 pt-6 border-t border-gray-200">
@@ -323,7 +323,7 @@ const PlanningView = () => {
                   {data.courses.length === 0 && <li>Ajouter au moins un cours</li>}
                   {data.courses.length > 0 && !data.courses.some(c => c.examDate) && <li>Définir des dates d'examen pour vos cours</li>}
                 </ul>
-              </div>
+            </div>
             )}
           </div>
         </div>
@@ -516,8 +516,8 @@ const PlanningView = () => {
               const totalHours = getDayTotalHours(date);
               const isToday = dateStr === today.toISOString().split('T')[0];
               const isPast = date < today && !isToday;
-
-              return (
+                    
+                    return (
                 <div
                   key={index}
                   className={`min-h-[120px] p-2 rounded-apple border-2 transition-all ${
@@ -566,9 +566,9 @@ const PlanningView = () => {
                 </div>
               );
             })}
-          </div>
-        </div>
-
+                          </div>
+                        </div>
+                        
         {/* Légende des matières */}
         {data.courses.length > 0 && (
           <div className="card-apple p-6">
@@ -583,9 +583,9 @@ const PlanningView = () => {
                   })
                   .flatMap(day => day.sessions.filter(s => s.courseId === course.id))
                   .length || 0;
-
-                return (
-                  <div
+                            
+                            return (
+                              <div
                     key={course.id}
                     className="flex items-center gap-3 p-3 bg-gray-50 rounded-apple"
                   >
@@ -595,14 +595,14 @@ const PlanningView = () => {
                     <div className="flex-1 min-w-0">
                       <div className="font-medium text-sm text-apple-text truncate">
                         {course.name}
-                      </div>
+                                </div>
                       <div className="text-xs text-apple-text-secondary">
                         {sessionsInMonth} session{sessionsInMonth > 1 ? 's' : ''} ce mois
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
             </div>
           </div>
         )}
@@ -620,40 +620,40 @@ const PlanningView = () => {
           <p className="text-apple-text-secondary">
             Configurez votre planning une fois, puis visualisez-le dans le calendrier
           </p>
-        </div>
+                                </div>
 
         {/* Onglets */}
         <div className="flex gap-4 mb-6 border-b border-gray-200">
-          <button
+                                  <button
             onClick={() => setActiveTab('configuration')}
             className={`px-6 py-3 font-semibold transition-all duration-200 border-b-2 ${
               activeTab === 'configuration'
                 ? 'border-apple-text text-apple-text'
                 : 'border-transparent text-apple-text-secondary hover:text-apple-text'
             }`}
-          >
+                                  >
             <Settings size={18} className="inline mr-2" />
             Configuration
-          </button>
-          <button
+                                  </button>
+                                  <button
             onClick={() => setActiveTab('calendrier')}
             className={`px-6 py-3 font-semibold transition-all duration-200 border-b-2 ${
               activeTab === 'calendrier'
                 ? 'border-apple-text text-apple-text'
                 : 'border-transparent text-apple-text-secondary hover:text-apple-text'
             }`}
-          >
+                                  >
             <Calendar size={18} className="inline mr-2" />
             Calendrier
-          </button>
-        </div>
+                                  </button>
+                                </div>
 
         {/* Contenu selon l'onglet actif */}
         {activeTab === 'configuration' ? (
           <ConfigurationView />
         ) : (
           !isConfigComplete ? (
-            <div className="card-apple p-12 text-center">
+          <div className="card-apple p-12 text-center">
               <Settings size={48} className="mx-auto mb-4 text-apple-text-secondary opacity-50" />
               <h3 className="text-xl font-semibold text-apple-text mb-2">
                 Configuration requise
@@ -667,7 +667,7 @@ const PlanningView = () => {
               >
                 Aller à la configuration
               </button>
-            </div>
+          </div>
           ) : (
             <CalendarView />
           )

@@ -28,7 +28,12 @@ export const getStoredData = () => {
 
 export const saveStoredData = (data) => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    // Ajouter un timestamp pour pouvoir comparer les versions
+    const dataWithTimestamp = {
+      ...data,
+      lastSaved: new Date().toISOString(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dataWithTimestamp));
   } catch (error) {
     console.error('Error saving to localStorage:', error);
   }

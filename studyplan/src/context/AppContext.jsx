@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { getStoredData, saveStoredData } from '../utils/storage';
 import { useAuth } from './AuthContext';
 import { getUserData, saveUserData } from '../utils/firebaseStorage';
@@ -17,38 +17,89 @@ export const AppProvider = ({ children }) => {
   const { user } = useAuth();
   const [data, setData] = useState(getStoredData());
   const [loading, setLoading] = useState(false);
+  const isInitialMount = useRef(true);
+
+  // Fusionner les données intelligemment (garder les plus récentes)
+  const mergeData = (firebaseData, localData) => {
+    // Comparer les timestamps pour déterminer quelle version est la plus récente
+    const firebaseTime = firebaseData.lastUpdated ? new Date(firebaseData.lastUpdated) : null;
+    const localTime = localData.lastSaved ? new Date(localData.lastSaved) : null;
+
+    // Si Firebase est plus récent ou si local est vide, utiliser Firebase
+    if (firebaseTime && (!localTime || firebaseTime > localTime)) {
+      // Mais préserver les données locales si Firebase est vide pour certains champs
+      return {
+        ...firebaseData,
+        courses: firebaseData.courses?.length > 0 ? firebaseData.courses : (localData.courses || []),
+        tasks: firebaseData.tasks?.length > 0 ? firebaseData.tasks : (localData.tasks || []),
+      };
+    }
+
+    // Si local est plus récent ou si Firebase est vide, utiliser local
+    if (localTime && (!firebaseTime || localTime > firebaseTime)) {
+      return localData;
+    }
+
+    // Par défaut, priorité à Firebase si elle existe, sinon local
+    if (firebaseData && (firebaseData.courses?.length > 0 || firebaseData.tasks?.length > 0)) {
+      return firebaseData;
+    }
+
+    return localData;
+  };
 
   // Charger les données depuis Firebase si l'utilisateur est connecté
   useEffect(() => {
     if (user) {
       setLoading(true);
+      const localData = getStoredData();
+      
       getUserData(user.uid)
-        .then((userData) => {
-          setData(userData);
+        .then((firebaseData) => {
+          // Fusionner les données Firebase avec les données locales
+          const mergedData = mergeData(firebaseData, localData);
+          setData(mergedData);
+          // Sauvegarder immédiatement pour avoir un backup
+          saveStoredData(mergedData);
         })
         .catch((error) => {
           console.error('Erreur lors du chargement des données:', error);
           // En cas d'erreur, utiliser les données locales
+          setData(localData);
         })
         .finally(() => {
           setLoading(false);
+          isInitialMount.current = false;
         });
     } else {
       // Si pas connecté, utiliser localStorage
-      setData(getStoredData());
+      const localData = getStoredData();
+      setData(localData);
+      isInitialMount.current = false;
     }
   }, [user]);
 
-  // Sauvegarder les données
+  // Sauvegarder les données (toujours en localStorage comme backup + Firebase si connecté)
   useEffect(() => {
-    if (user && !loading) {
-      // Sauvegarder dans Firebase
-      saveUserData(user.uid, data).catch((error) => {
-        console.error('Erreur lors de la sauvegarde:', error);
-      });
-    } else if (!user) {
-      // Sauvegarder dans localStorage si pas connecté
+    // Ne pas sauvegarder lors du premier chargement (montage initial)
+    if (isInitialMount.current) {
+      return;
+    }
+
+    // TOUJOURS sauvegarder en localStorage comme backup
+    try {
       saveStoredData(data);
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde localStorage:', error);
+    }
+
+    // Si connecté, sauvegarder aussi sur Firebase (sans lastSaved qui est juste pour localStorage)
+    if (user && !loading) {
+      const { lastSaved, ...dataForFirebase } = data;
+      saveUserData(user.uid, dataForFirebase).catch((error) => {
+        console.error('Erreur lors de la sauvegarde Firebase:', error);
+        // En cas d'erreur Firebase, les données sont quand même en localStorage
+      });
     }
   }, [data, user, loading]);
 
