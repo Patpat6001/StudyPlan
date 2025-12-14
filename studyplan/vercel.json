@@ -1,0 +1,7 @@
+{
+  "buildCommand": "npm ci && npm install tailwindcss@3.4.18 --save-dev --save-exact && npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "installCommand": "npm ci --legacy-peer-deps=false"
+}
+

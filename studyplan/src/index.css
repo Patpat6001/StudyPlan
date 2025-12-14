@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply antialiased;
+  }
+  
+  body {
+    @apply bg-apple-bg text-apple-text font-sans;
+    margin: 0;
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-apple-text;
+  }
+}
+
+@layer components {
+  .card-apple {
+    @apply bg-white rounded-apple shadow-apple transition-all duration-300;
+  }
+  
+  .card-apple:hover {
+    @apply shadow-apple-hover;
+  }
+  
+  .btn-apple {
+    @apply bg-apple-text text-white rounded-apple px-6 py-3 font-medium transition-all duration-200 hover:opacity-90 active:scale-95;
+  }
+  
+  .btn-apple-secondary {
+    @apply bg-white text-apple-text rounded-apple px-6 py-3 font-medium shadow-apple transition-all duration-200 hover:shadow-apple-hover active:scale-95;
+  }
+  
+  .transition-apple {
+    @apply transition-all duration-200;
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "StudyPlan - Planning Blocus",
+  "short_name": "StudyPlan",
+  "description": "Application de planning pour vos révisions de blocus",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d1d1f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": []
+}
+
