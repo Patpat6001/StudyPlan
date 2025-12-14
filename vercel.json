@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd studyplan && npm ci && npm install tailwindcss@3.4.18 --save-dev --save-exact && npm run build",
+  "outputDirectory": "studyplan/dist",
+  "framework": "vite",
+  "installCommand": "cd studyplan && npm ci --legacy-peer-deps=false",
+  "rootDirectory": "studyplan"
+}
+
